@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8709852546368926264}
   - component: {fileID: 8709852546368926266}
   - component: {fileID: 8709852546368926265}
+  - component: {fileID: 2005358867074414708}
   m_Layer: 0
   m_Name: Tail (2)
   m_TagString: Untagged
@@ -81,6 +82,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2005358867074414708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8709852546368926263}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c748d7f794ed5de4ebbef35278ce4ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 8709852547961514480}
+  _speed: 0
 --- !u!1 &8709852546411581719
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,6 +107,7 @@ GameObject:
   - component: {fileID: 8709852546411581720}
   - component: {fileID: 8709852546411581722}
   - component: {fileID: 8709852546411581721}
+  - component: {fileID: 1520691722429097571}
   m_Layer: 0
   m_Name: Tail (3)
   m_TagString: Untagged
@@ -162,6 +178,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1520691722429097571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8709852546411581719}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c748d7f794ed5de4ebbef35278ce4ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 8709852546368926264}
+  _speed: 0
 --- !u!1 &8709852546673789720
 GameObject:
   m_ObjectHideFlags: 0
@@ -261,7 +291,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1.5, z: 1.5}
+  m_Size: {x: 1.2, y: 1.2, z: 1.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8709852546673789725
 MonoBehaviour:
@@ -275,8 +305,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35ba7439d540f914bbb42bc9be61321f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _roadSize: 0
-  _movementSpeed: 0
+  _roadSize: 3
+  _movementSpeed: 5
+  _boostedSpeed: 15
+  _boostDuration:
+    _coolDown: 5
 --- !u!114 &6690358022121431634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,6 +333,7 @@ GameObject:
   - component: {fileID: 8709852547215512518}
   - component: {fileID: 8709852547215512520}
   - component: {fileID: 8709852547215512519}
+  - component: {fileID: 657230190207654511}
   m_Layer: 0
   m_Name: Tail
   m_TagString: Untagged
@@ -370,6 +404,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &657230190207654511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8709852547215512517}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c748d7f794ed5de4ebbef35278ce4ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 8709852546673789724}
+  _speed: 0
 --- !u!1 &8709852547961514383
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,6 +429,7 @@ GameObject:
   - component: {fileID: 8709852547961514480}
   - component: {fileID: 8709852547961514482}
   - component: {fileID: 8709852547961514481}
+  - component: {fileID: 6950816859833699701}
   m_Layer: 0
   m_Name: Tail (1)
   m_TagString: Untagged
@@ -451,3 +500,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6950816859833699701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8709852547961514383}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c748d7f794ed5de4ebbef35278ce4ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 8709852547215512518}
+  _speed: 0

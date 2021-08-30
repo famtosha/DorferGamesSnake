@@ -12,9 +12,15 @@ public class Snake : MonoBehaviour
 
     [SerializeField] private float _roadSize;
     [SerializeField] private float _movementSpeed;
+    [SerializeField] private float _boostedSpeed;
+    [SerializeField] private Timer _boostDuration;
 
     private PlayerInput _playerInput;
     private SceneLoader _sceneLoader;
+
+    private bool _isBoosted => !_boostDuration.isReady;
+
+    private Color _currentColor;
 
     private int _gemCount;
     public int gemCount
@@ -51,24 +57,57 @@ public class Snake : MonoBehaviour
 
     private void Update()
     {
-        var newPosition = new Vector3(_playerInput.cursorPosition * _roadSize, transform.position.y, transform.position.z);
-        newPosition += new Vector3(0, 0, _movementSpeed * Time.deltaTime);
+        print(_isBoosted);
+        _boostDuration.UpdateTimer(Time.deltaTime);
+
+        var currentPositionX = _isBoosted ? 0 : _playerInput.cursorPosition;
+        var newPosition = new Vector3(currentPositionX * _roadSize, transform.position.y, transform.position.z);
+
+        var currentSpeed = _isBoosted ? _boostedSpeed : _movementSpeed;
+        newPosition += new Vector3(0, 0, currentSpeed * Time.deltaTime);
+
+
         transform.position = newPosition;
+    }
+
+    public void SetColor(Color color)
+    {
+        _currentColor = color;
+        GetComponent<MeshRenderer>().material.color = color;
     }
 
     public void CollectGem()
     {
         gemCount++;
+        if (gemCount >= 3)
+        {
+            gemCount = 0;
+            _boostDuration.Reset();
+        }
     }
 
-    public void HumanTouch()
+    public void HumanTouch(Human human)
     {
-        humanCount++;
+        if (human.color == _currentColor || _isBoosted)
+        {
+            humanCount++;
+        }
+        else
+        {
+            Lose();
+        }
     }
 
-    public void EnterTrap()
+    public void EnterTrap(Trap trap)
     {
-        _sceneLoader.ReloadActiveScene();
+        if (_isBoosted)
+        {
+            Destroy(trap.gameObject);
+        }
+        else
+        {
+            Lose();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -78,14 +117,19 @@ public class Snake : MonoBehaviour
             CollectGem();
             Destroy(other.gameObject);
         }
-        if (other.HasComponent<Human>())
+        if (other.TryGetComponent(out Human human))
         {
-            HumanTouch();
+            HumanTouch(human);
             Destroy(other.gameObject);
         }
-        if (other.HasComponent<Trap>())
+        if (other.TryGetComponent(out Trap trap))
         {
-            EnterTrap();
+            EnterTrap(trap);
         }
+    }
+
+    public void Lose()
+    {
+        _sceneLoader.ReloadActiveScene();
     }
 }

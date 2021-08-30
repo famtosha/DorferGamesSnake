@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using System.Linq;
 
 public static class MathfHelper
 {
@@ -12,6 +14,23 @@ public static class MathfHelper
     public static Vector3 PointOnLine(Vector3 a, Vector3 b, Vector3 p)
     {
         return a + Vector3.Project(p - a, b - a);
+    }
+
+    public static T GetRandom<T>(this List<T> list)
+    {
+        return list[Random.Range(0, list.Count)];
+    }
+
+    public static List<T> GetRandom<T>(this List<T> list, int count)
+    {
+        List<T> result = new List<T>();
+        var temp = list;
+        for (int i = 0; i < count; i++)
+        {
+            result.Add(temp.GetRandom());
+            temp = list.Except(result).ToList();
+        }
+        return result;
     }
 
     public static Vector3 RandomXZ(float range)
