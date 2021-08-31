@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8122635356380913642}
   - component: {fileID: 1589671018618301558}
   - component: {fileID: 5608741435884053825}
-  - component: {fileID: -8095256304321783315}
+  - component: {fileID: 4126103836299062206}
   m_Layer: 0
   m_Name: ColorChanger
   m_TagString: Untagged
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-8095256304321783315
+--- !u!114 &4126103836299062206
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2784605310913067247}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d4c7e7b6faebea4888b0c7dc5d5591f, type: 3}
+  m_Script: {fileID: 11500000, guid: 8222ae70f25104548be027e227650f74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _color: {r: 0, g: 0, b: 0, a: 0}

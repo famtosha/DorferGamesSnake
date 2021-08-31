@@ -3,7 +3,7 @@ using Zenject;
 
 public class LevelExit : MonoBehaviour
 {
-    [SerializeField] private LevelResultUI _levelResultUI;
+    private LevelResultUI _levelResultUI;
 
     [Inject]
     private void Construct(LevelResultUI levelResultUI)

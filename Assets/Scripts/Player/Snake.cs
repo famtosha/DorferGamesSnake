@@ -14,6 +14,7 @@ public class Snake : MonoBehaviour
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _boostedSpeed;
     [SerializeField] private Timer _boostDuration;
+    [SerializeField] private float _strafeSpeed;
 
     [SerializeField] private Transform _head;
 
@@ -129,11 +130,25 @@ public class Snake : MonoBehaviour
 
     private void Move()
     {
-        float newPositionX = _isBoosted ? 0 : _playerInput.cursorPosition * _roadSize;
+        float cursorPositionX = _isBoosted ? 0 : _playerInput.cursorPosition * _roadSize;
+
+        if (cursorPositionX - transform.position.x > 0)
+        {
+            var temp = transform.position.x + (_strafeSpeed * Time.deltaTime);
+            if (temp < cursorPositionX) cursorPositionX = temp;
+        }
+        else
+        {
+            var temp = transform.position.x - (_strafeSpeed * Time.deltaTime);
+            if (temp > cursorPositionX) cursorPositionX = temp;
+        }
+
+        cursorPositionX = Mathf.Clamp(cursorPositionX, -_roadSize, _roadSize);
+
+        transform.position = new Vector3(cursorPositionX, transform.position.y, transform.position.z);
+
         var currentSpeed = _isBoosted ? _boostedSpeed : _movementSpeed;
-        var newPosition = new Vector3(newPositionX, transform.position.y, transform.position.z);
-        newPosition += new Vector3(0, 0, currentSpeed * Time.deltaTime);
-        transform.position = newPosition;
+        transform.position += new Vector3(0, 0, currentSpeed * Time.deltaTime);
     }
 
     private void Lose()

@@ -29,6 +29,7 @@ public class Tail : MonoBehaviour
 
             _rotationQueue.Add(_head.rotation);
             _rotationQueue.RemoveAt(0);
+            _updateRate.Reset();
         }
 
         var segmentSize = _positionQeueue.Count / _segments.Count;
