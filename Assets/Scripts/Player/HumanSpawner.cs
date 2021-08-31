@@ -24,7 +24,7 @@ public class HumanSpawner : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = _color;
         Gizmos.DrawCube(transform.position, new Vector3(_spawnArea, 0.5f, _spawnArea) * 2);
     }
 }

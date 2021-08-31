@@ -15,12 +15,16 @@ public class Snake : MonoBehaviour
     [SerializeField] private float _boostedSpeed;
     [SerializeField] private Timer _boostDuration;
 
+    [SerializeField] private Transform _head;
+
     private PlayerInput _playerInput;
     private SceneLoader _sceneLoader;
 
     private bool _isBoosted => !_boostDuration.isReady;
 
     private Color _currentColor;
+
+    private bool _movementEnabled = true;
 
     private int _gemCount;
     public int gemCount
@@ -57,23 +61,22 @@ public class Snake : MonoBehaviour
 
     private void Update()
     {
-        print(_isBoosted);
         _boostDuration.UpdateTimer(Time.deltaTime);
+        if (_movementEnabled)
+        {
+            RotateHead();
+            Move();
+        }
+    }
 
-        var currentPositionX = _isBoosted ? 0 : _playerInput.cursorPosition;
-        var newPosition = new Vector3(currentPositionX * _roadSize, transform.position.y, transform.position.z);
-
-        var currentSpeed = _isBoosted ? _boostedSpeed : _movementSpeed;
-        newPosition += new Vector3(0, 0, currentSpeed * Time.deltaTime);
-
-
-        transform.position = newPosition;
+    public void Win()
+    {
+        _movementEnabled = false;
     }
 
     public void SetColor(Color color)
     {
         _currentColor = color;
-        GetComponent<MeshRenderer>().material.color = color;
     }
 
     public void CollectGem()
@@ -86,7 +89,7 @@ public class Snake : MonoBehaviour
         }
     }
 
-    public void HumanTouch(Human human)
+    public void CollectHuman(Human human)
     {
         if (human.color == _currentColor || _isBoosted)
         {
@@ -110,6 +113,35 @@ public class Snake : MonoBehaviour
         }
     }
 
+    private void RotateHead()
+    {
+        if (_isBoosted)
+        {
+            _head.transform.forward = Vector3.forward;
+        }
+        else
+        {
+            var t = ((_playerInput.cursorPosition * _roadSize) - transform.position.x) + 0.5f;
+            var lookDirection = Vector3.Lerp(Vector3.forward - Vector3.right, Vector3.forward + Vector3.right, t);
+            _head.transform.forward = lookDirection;
+        }
+    }
+
+    private void Move()
+    {
+        float newPositionX = _isBoosted ? 0 : _playerInput.cursorPosition * _roadSize;
+        var currentSpeed = _isBoosted ? _boostedSpeed : _movementSpeed;
+        var newPosition = new Vector3(newPositionX, transform.position.y, transform.position.z);
+        newPosition += new Vector3(0, 0, currentSpeed * Time.deltaTime);
+        transform.position = newPosition;
+    }
+
+    private void Lose()
+    {
+        _movementEnabled = false;
+        _sceneLoader.ReloadActiveScene();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.HasComponent<Crystal>())
@@ -119,17 +151,12 @@ public class Snake : MonoBehaviour
         }
         if (other.TryGetComponent(out Human human))
         {
-            HumanTouch(human);
+            CollectHuman(human);
             Destroy(other.gameObject);
         }
         if (other.TryGetComponent(out Trap trap))
         {
             EnterTrap(trap);
         }
-    }
-
-    public void Lose()
-    {
-        _sceneLoader.ReloadActiveScene();
     }
 }

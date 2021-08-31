@@ -21,6 +21,13 @@ public static class MathfHelper
         return list[Random.Range(0, list.Count)];
     }
 
+    public static float Normalize(this float value)
+    {
+        if (value > 0) return 1;
+        if (value < 0) return -1;
+        return 0;
+    }
+
     public static List<T> GetRandom<T>(this List<T> list, int count)
     {
         List<T> result = new List<T>();

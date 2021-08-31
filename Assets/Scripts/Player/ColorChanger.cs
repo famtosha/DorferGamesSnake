@@ -3,6 +3,7 @@
 public class ColorChanger : MonoBehaviour
 {
     [SerializeField] private Color _color;
+    private bool _isUsed = false;
 
     private void Awake()
     {
@@ -17,10 +18,14 @@ public class ColorChanger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Snake snake))
+        if (other.TryGetComponent(out Tail tail))
+        {
+            tail.SetColor(_color);
+        }
+        if (other.TryGetComponent(out Snake snake) && !_isUsed)
         {
             snake.SetColor(_color);
-            Destroy(this);
+            _isUsed = true;
         }
     }
 }
