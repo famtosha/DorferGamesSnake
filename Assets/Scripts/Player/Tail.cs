@@ -1,34 +1,41 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Linq;
 
 public class Tail : MonoBehaviour
 {
-    [SerializeField] private Transform _target;
-    [SerializeField] [Range(0, 1)] private float _speed;
-    [SerializeField] [Min(0)] private float _minDistance;
+    [SerializeField] private List<Transform> _segments;
+    [SerializeField] private Timer _updateRate;
+    [SerializeField] private Transform _head;
 
-    private Vector3 _lastPostion;
-    private Quaternion _lastRoatation;
+    private List<Vector3> _positionQeueue;
+    private List<Quaternion> _rotationQueue;
 
-    private void Start()
+    private void Awake()
     {
-        _lastPostion = _target.position;
-        _lastRoatation = _target.rotation;
+        _positionQeueue = new List<Vector3>(Enumerable.Repeat(transform.position, 32));
+        _rotationQueue = new List<Quaternion>(Enumerable.Repeat(_head.rotation, 32));
     }
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, _target.position) > _minDistance)
+        _updateRate.UpdateTimer(Time.deltaTime);
+
+        if (_updateRate.isReady)
         {
-            transform.position = Vector3.Lerp(transform.position, _lastPostion, _speed);
-            transform.rotation = Quaternion.Lerp(transform.rotation, _lastRoatation, _speed);
+            _positionQeueue.Add(transform.position);
+            _positionQeueue.RemoveAt(0);
 
-            _lastPostion = _target.position;
-            _lastRoatation = _target.rotation;
+            _rotationQueue.Add(_head.rotation);
+            _rotationQueue.RemoveAt(0);
         }
-    }
 
-    public void SetColor(Color color)
-    {
-        GetComponent<MeshRenderer>().material.color = color;
+        var segmentSize = _positionQeueue.Count / _segments.Count;
+        for (int i = 0; i < _segments.Count; i++)
+        {
+            _segments[i].position = _positionQeueue[i * segmentSize];
+            _segments[i].rotation = _rotationQueue[i * segmentSize];
+        }
     }
 }

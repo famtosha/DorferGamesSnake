@@ -18,7 +18,7 @@ public class ColorChanger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Tail tail))
+        if (other.TryGetComponent(out Segment tail))
         {
             tail.SetColor(_color);
         }
